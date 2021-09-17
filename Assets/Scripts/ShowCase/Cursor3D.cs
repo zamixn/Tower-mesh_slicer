@@ -38,13 +38,25 @@ public class Cursor3D : MonoBehaviour
         if (SelectedObject != null)
         {
             SelectedObject.Move(delta);
+            Point(SelectedObject.GetPosition());
         }
     }
 
-
+    private void Update()
+    {
+        if (SelectedObject != null)
+        {
+            Point(SelectedObject.GetPosition());
+        }
+        
+    }
 
     public void Point(Vector3 position)
     {
+        float z = SelectedObject.GetPosition().z;
+        XAxis.SetZ(z);
+        YAxis.SetZ(z);
+        ZAxis.SetZ(z);
         transform.position = position;
     }
 

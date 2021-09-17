@@ -18,4 +18,9 @@ public static class Extensions
 
         return $"({v.x.ToString(format)}, {v.y.ToString(format)}, {v.z.ToString(format)})";
     }
+
+    public static float Sign(this float f)
+    {
+        return Mathf.Sign(f);
+    }
 }
