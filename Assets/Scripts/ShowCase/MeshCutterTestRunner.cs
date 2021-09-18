@@ -51,14 +51,18 @@ public class MeshCutterTestRunner : MonoBehaviour
         }
 
         if (DestroyOriginalMesh)
+        {
             Destroy(meshToCut.gameObject);
+            GeneratedMeshes.RemoveAt(0);
+        }
     }
 
     public void CleanUp()
     {
         foreach (var mesh in GeneratedMeshes)
         {
-            Destroy(mesh.gameObject);
+            if(mesh != null)
+                Destroy(mesh.gameObject);
         }
         GeneratedMeshes.Clear();
     }

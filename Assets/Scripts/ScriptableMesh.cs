@@ -29,4 +29,9 @@ public class ScriptableMesh : MonoBehaviour, ISelectable
     {
         return transform.position;
     }
+
+    public bool IsValid()
+    {
+        return this != null && gameObject != null;
+    }
 }

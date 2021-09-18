@@ -19,6 +19,8 @@ public class Cursor3D : MonoBehaviour
 
     private ISelectable SelectedObject;
 
+    private bool IsHidden = false;
+
     private void Start()
     {
         BindAxes();
@@ -35,7 +37,7 @@ public class Cursor3D : MonoBehaviour
 
     private void Drag(Vector3 delta)
     {
-        if (SelectedObject != null)
+        if (SelectedObject != null && SelectedObject.IsValid())
         {
             SelectedObject.Move(delta);
             Point(SelectedObject.GetPosition());
@@ -44,10 +46,12 @@ public class Cursor3D : MonoBehaviour
 
     private void Update()
     {
-        if (SelectedObject != null)
+        if (SelectedObject != null && SelectedObject.IsValid())
         {
             Point(SelectedObject.GetPosition());
         }
+        else if (!IsHidden)
+            Hide();
         
     }
 
@@ -85,6 +89,7 @@ public class Cursor3D : MonoBehaviour
 
     private void Enable(bool enable)
     {
+        IsHidden = enable;
         XAxis.SetActive(enable);
         ZAxis.SetActive(enable);
         YAxis.SetActive(enable);

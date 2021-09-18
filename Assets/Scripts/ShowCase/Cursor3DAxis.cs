@@ -27,11 +27,10 @@ public class Cursor3DAxis : MonoBehaviour
         ZPos = Camera.main.transform.position.z - z;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.LogError("Mouse button down");
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             var objectsHit = Physics.RaycastAll(ray, Mathf.Infinity, Mask);
             foreach (var obj in objectsHit)
@@ -46,11 +45,13 @@ public class Cursor3DAxis : MonoBehaviour
         }
         if (Input.GetMouseButtonUp(0))
         {
-            Debug.LogError("Mouse button up");
             PrevMousePos = Vector3.zero;
             IsDragging = false;
         }
+    }
 
+    private void FixedUpdate()
+    {
         if (IsDragging)
         {
             Vector3 mousePos = Input.mousePosition;
@@ -67,20 +68,23 @@ public class Cursor3DAxis : MonoBehaviour
         Vector3 worldPrevPos = Camera.main.ScreenToWorldPoint(prevPos);
         Vector3 worldCurrPos = Camera.main.ScreenToWorldPoint(currentPos);
         Vector3 delta = worldCurrPos - worldPrevPos;
+        Vector3 normalVector;
+
         switch (CursorAxis)
         {
             case CursorAxis.X:
-                delta = new Vector3(delta.x.Sign() * delta.magnitude, 0, 0);
+                normalVector = Vector3.right;
                 break;
             case CursorAxis.Y:
-                delta = new Vector3(0, delta.y.Sign() * delta.magnitude, 0);
+                normalVector = Vector3.up;
                 break;
             case CursorAxis.Z:
-                delta = new Vector3(0, 0, delta.z.Sign() * delta.magnitude);
+                normalVector = Vector3.forward;
                 break;
             default:
                 throw new Exception($"Invalid axis {CursorAxis}");
         }
+        delta = Vector3.Project(delta, normalVector);
         return -delta;
     }
 
